@@ -7,6 +7,7 @@ namespace XamForms.Controls
 {
 	public partial class Calendar : ContentView
 	{
+
 		#region SelectedDate
 
 		public static readonly BindableProperty SelectedDateProperty =
@@ -108,22 +109,22 @@ namespace XamForms.Controls
 		#region SelectedBackgroundColor
 
 		public static readonly BindableProperty SelectedBackgroundColorProperty =
-			BindableProperty.Create(nameof(SelectedBackgroundColor), typeof(Color?), typeof(Calendar), null,
-									propertyChanged: (bindable, oldValue, newValue) => (bindable as Calendar).ChangeSelectedBackgroundColor((Color?)newValue, (Color?)oldValue));
+			BindableProperty.Create(nameof(SelectedBackgroundColor), typeof(Color), typeof(Calendar), Color.Transparent,
+									propertyChanged: (bindable, oldValue, newValue) => (bindable as Calendar).ChangeSelectedBackgroundColor((Color)newValue, (Color)oldValue));
 
-		protected void ChangeSelectedBackgroundColor(Color? newValue, Color? oldValue)
+		protected void ChangeSelectedBackgroundColor(Color newValue, Color oldValue)
 		{
 			if (newValue == oldValue) return;
-			if (newValue.HasValue) buttons.FindAll(b => b.IsSelected).ForEach(b => b.BackgroundColor = newValue.Value);
+			buttons.FindAll(b => b.IsSelected).ForEach(b => b.BackgroundColor = newValue);
 		}
 
 		/// <summary>
 		/// Gets or sets the background color of the selected date.
 		/// </summary>
 		/// <value>The color of the selected background.</value>
-		public Color? SelectedBackgroundColor
+		public Color SelectedBackgroundColor
 		{
-			get { return (Color?)GetValue(SelectedBackgroundColorProperty); }
+			get { return (Color)GetValue(SelectedBackgroundColorProperty); }
 			set { SetValue(SelectedBackgroundColorProperty, value); }
 		}
 
@@ -132,22 +133,23 @@ namespace XamForms.Controls
 		#region SelectedTextColor
 
 		public static readonly BindableProperty SelectedTextColorProperty =
-			BindableProperty.Create(nameof(SelectedTextColor), typeof(Color?), typeof(Calendar), null,
-									propertyChanged: (bindable, oldValue, newValue) => (bindable as Calendar).ChangeSelectedTextColor((Color?)newValue, (Color?)oldValue));
+			BindableProperty.Create(nameof(SelectedTextColor), typeof(Color), typeof(Calendar), Color.Black,
+									propertyChanged: (bindable, oldValue, newValue) => (bindable as Calendar).ChangeSelectedTextColor((Color)newValue, (Color)oldValue));
 
-		protected void ChangeSelectedTextColor(Color? newValue, Color? oldValue)
+		protected void ChangeSelectedTextColor(Color newValue, Color oldValue)
 		{
 			if (newValue == oldValue) return;
-			if (newValue.HasValue) buttons.FindAll(b => b.IsSelected).ForEach(b => b.TextColor = newValue.Value);
+			buttons.FindAll(b => b.IsSelected).ForEach(b => b.TextColor = newValue);
 		}
 
 		/// <summary>
 		/// Gets or sets the text color of the selected date.
 		/// </summary>
 		/// <value>The color of the selected text.</value>
-		public Color? SelectedTextColor
+		public Color SelectedTextColor
 		{
-			get { return (Color?)GetValue(SelectedTextColorProperty); }
+			get {
+				return (Color)GetValue(SelectedTextColorProperty); }
 			set { SetValue(SelectedTextColorProperty, value); }
 		}
 
@@ -214,8 +216,8 @@ namespace XamForms.Controls
 				button.FontSize = SelectedFontSize;
 				button.BorderWidth = SelectedBorderWidth;
 				button.BorderColor = SelectedBorderColor;
-				button.BackgroundColor = SelectedBackgroundColor.HasValue ? SelectedBackgroundColor.Value : (special != null && special.BackgroundColor.HasValue ? special.BackgroundColor.Value : defaultBackgroundColor);
-				button.TextColor = SelectedTextColor.HasValue ? SelectedTextColor.Value : (special != null && special.TextColor.HasValue ? special.TextColor.Value : defaultTextColor);
+				button.BackgroundColor = SelectedBackgroundColor != default(Color) ? SelectedBackgroundColor : (special != null && special.BackgroundColor.HasValue ? special.BackgroundColor.Value : defaultBackgroundColor);
+				button.TextColor = SelectedTextColor != default(Color) ? SelectedTextColor : (special != null && special.TextColor.HasValue ? special.TextColor.Value : defaultTextColor);
 				button.FontAttributes = SelectedFontAttributes != FontAttributes.None ? SelectedFontAttributes : (special != null && special.FontAttributes.HasValue ? special.FontAttributes.Value : defaultFontAttributes);
 			});
 		}

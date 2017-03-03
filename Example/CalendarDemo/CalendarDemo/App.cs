@@ -53,19 +53,44 @@ namespace CalendarDemo
 			calendar.SetBinding(Calendar.SelectedDateProperty, nameof(vm.Date));
 			calendar.BindingContext = vm;
 
-            // The root page of your application
-            MainPage = new ContentPage
-            {
-				BackgroundColor= Color.White,
-				Content = new ScrollView {
-					Content = new StackLayout {
-							Padding = new Thickness(5, Device.OS == TargetPlatform.iOS ? 25 : 5, 5, 5),
-							Children = {
-							calendar
+
+
+
+			var nextPageButton = new Button()
+			{
+				Text = "View XAML page",
+				HorizontalOptions = LayoutOptions.CenterAndExpand
+			};
+
+
+			var contentPage = new ContentPage
+			{
+				BackgroundColor = Color.White,
+				Title = "Code page",
+				Content = new ScrollView
+				{
+					Content = new StackLayout
+					{
+						Padding = new Thickness(5, Device.OS == TargetPlatform.iOS ? 25 : 5, 5, 5),
+						Children = {
+							calendar,
+							nextPageButton
 						}
 					}
-                }
-            };
+				}
+			};
+
+			MainPage = new NavigationPage(contentPage);
+
+			nextPageButton.Clicked += async (sender, e) =>
+			{
+				var xamlPage = new ContentPage() 
+				{
+					Content = new CalendarXamlView()
+				};
+				await MainPage.Navigation.PushAsync(xamlPage);
+
+			};
 		}
 
         protected override void OnStart()

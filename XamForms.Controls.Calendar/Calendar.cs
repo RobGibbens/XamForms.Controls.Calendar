@@ -222,7 +222,7 @@ namespace XamForms.Controls
 		protected void ChangeDatesBackgroundColor(Color newValue, Color oldValue)
 		{
 			if (newValue == oldValue) return;
-			buttons.FindAll(b => b.IsEnabled && (!b.IsSelected || !SelectedBackgroundColor.HasValue)).ForEach(b => b.BackgroundColor = newValue);
+			buttons.FindAll(b => b.IsEnabled && (!b.IsSelected || SelectedBackgroundColor != default(Color))).ForEach(b => b.BackgroundColor = newValue);
 		}
 
 		/// <summary>
@@ -246,7 +246,7 @@ namespace XamForms.Controls
 		protected void ChangeDatesTextColor(Color newValue, Color oldValue)
 		{
 			if (newValue == oldValue) return;
-			buttons.FindAll(b => b.IsEnabled && (!b.IsSelected || !SelectedTextColor.HasValue) && !b.IsOutOfMonth).ForEach(b => b.TextColor = newValue);
+			buttons.FindAll(b => b.IsEnabled && (!b.IsSelected || SelectedTextColor != default(Color)) && !b.IsOutOfMonth).ForEach(b => b.TextColor = newValue);
 		}
 
 		/// <summary>
@@ -270,7 +270,7 @@ namespace XamForms.Controls
 		protected void ChangeDatesFontAttributes(FontAttributes newValue, FontAttributes oldValue)
 		{
 			if (newValue == oldValue) return;
-			buttons.FindAll(b => b.IsEnabled && (!b.IsSelected || !SelectedTextColor.HasValue) && !b.IsOutOfMonth).ForEach(b => b.FontAttributes = newValue);
+			buttons.FindAll(b => b.IsEnabled && (!b.IsSelected || SelectedTextColor != default(Color)) && !b.IsOutOfMonth).ForEach(b => b.FontAttributes = newValue);
 		}
 
 		/// <summary>
