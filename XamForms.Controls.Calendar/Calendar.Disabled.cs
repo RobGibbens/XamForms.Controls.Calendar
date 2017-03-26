@@ -20,6 +20,16 @@ namespace XamForms.Controls
 			set { SetValue(DisableAllDatesProperty, value); }
 		}
 
+
+		public static readonly BindableProperty DisablePastDatesProperty = BindableProperty.Create(nameof(DisablePastDates), typeof(bool), typeof(Calendar), false,
+				propertyChanged: (bindable, oldValue, newValue) => (bindable as Calendar)?.RaiseSpecialDatesChanged());
+
+		public bool DisablePastDates
+		{
+			get { return (bool)GetValue(DisablePastDatesProperty); }
+			set { SetValue(DisablePastDatesProperty, value); }
+		}
+
 		#endregion
 
 		#region DisabledBorderWidth

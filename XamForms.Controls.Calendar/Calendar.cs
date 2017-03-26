@@ -537,7 +537,7 @@ namespace XamForms.Controls
 						sd = SpecialDates.FirstOrDefault(s => s.Date.Date == start.Date);
 					}
 
-					if ((MinDate.HasValue && start < MinDate) || (MaxDate.HasValue && start > MaxDate) || (DisableAllDates && sd == null))
+					if ((MinDate.HasValue && start < MinDate) || (MaxDate.HasValue && start > MaxDate) || (DisableAllDates && sd == null) || (DisablePastDates && start.Date < DateTime.Now.Date))
 					{
 						SetButtonDisabled(buttons[i]);
 					}
