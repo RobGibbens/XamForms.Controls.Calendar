@@ -228,34 +228,60 @@ namespace XamForms.Controls
 
 			if (!MultiSelectDates)
 			{
-				buttons.FindAll(b => b.IsSelected).ForEach(b => ResetButton(b));
-				SelectedDates.Clear();
+			    if (buttons != null && buttons.Any())
+			    {
+			        var selectedButtons = buttons.FindAll(b => b.IsSelected);
+			        if (selectedButtons.Any())
+			        {
+			            selectedButtons.ForEach(ResetButton);
+			        }
+			    }
+
+			    SelectedDates.Clear();
 			}
 
-			if (buttons.Count == 0)
+			if (buttons != null && !buttons.Any() && SelectedDate.HasValue)
 			{
 				SelectedDates.Add(SelectedDate.Value.Date);
 			}
 
-			var button = buttons.Find(b => b.Date.HasValue && b.Date.Value.Date == date.Value.Date && b.IsEnabled);
-			if (button == null) return false;
-			var deselect = button.IsSelected;
-			if (button.IsSelected)
-			{
-				ResetButton(button);
-			}
-			else
-			{
-				SelectedDates.Add(SelectedDate.Value.Date);
-				var spD = SpecialDates?.FirstOrDefault(s => s.Date.Date == button.Date.Value.Date);
-				SetButtonSelected(button, spD);
-			}
-			if (clicked)
-			{
-				DateClicked?.Invoke(this, new DateTimeEventArgs { DateTime = SelectedDate.Value });
-				DateCommand?.Execute(SelectedDate.Value);
-			}
-			return deselect;
+		    if (buttons != null)
+		    {
+		        var button = buttons.Find(b => b.Date.HasValue && b.Date.Value.Date == date.Value.Date && b.IsEnabled);
+		        if (button == null)
+		        {
+		            return false;
+		        }
+		        var deselect = button.IsSelected;
+		        if (button.IsSelected)
+		        {
+		            ResetButton(button);
+		        }
+		        else
+		        {
+		            if (SelectedDate.HasValue)
+		            {
+		                SelectedDates.Add(SelectedDate.Value.Date);
+		                if (button.Date.HasValue)
+		                {
+		                    var spD = SpecialDates?.FirstOrDefault(s => s.Date.Date == button.Date.Value.Date);
+		                    SetButtonSelected(button, spD);
+		                }
+		            }
+		        }
+
+		        if (clicked && SelectedDate.HasValue)
+		        {
+		            DateClicked?.Invoke(this, new DateTimeEventArgs { DateTime = SelectedDate.Value });
+		            DateCommand?.Execute(SelectedDate.Value);
+		        }
+		    
+		        return deselect;
+		    }
+
+		    return false;
+
+
 		}
 
 		protected void ResetButton(CalendarButton b)
